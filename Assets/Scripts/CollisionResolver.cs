@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CollisionResolver : MonoBehaviour
 {
-    [SerializeField]
-    private FruitPlacer fruitPlacer;
+    // keeping track of fruit placement requests to get rid of duplicates
+    private List<Vector3> placementRequests = new List<Vector3>();
 
     private static CollisionResolver instance;
 
@@ -22,19 +22,41 @@ public class CollisionResolver : MonoBehaviour
         return instance;
     }
 
-    // we already know these gameobjects are the same type of fruit
-    public void ResolveCollision(GameObject obj1, GameObject obj2, Vector3 position, Fruit.Level fruitLevel)
+    // called by fruit when they collide with another fruit of the same type
+    public void ResolveCollision(GameObject obj1, GameObject obj2, Vector3 position, FruitInfo.Level fruitLevel)
     {
         // if one of the objs is null prolly cus another collision already happened involving one of em
         if (obj1 == null || obj2 == null)
             return;
 
-        //if (fruitLevel == Fruit.Level.Watermelon)
-            // I guess you win??
-        
+        //if (fruitLevel == FruitInfo.Level.Watermelon)
+        // I guess you win??
+
         obj1.GetComponent<Fruit>().Combine(position);
         obj2.GetComponent<Fruit>().Combine(position);
 
-        fruitPlacer.PlaceFruit(++fruitLevel, position);
+        PlaceFruit(++fruitLevel, position);
+    }
+
+    // combining fruit into a new one
+    public void PlaceFruit(FruitInfo.Level fruitLevel, Vector3 position)
+    {
+        // this is a duplicate request from the other side of a collision...
+        if (placementRequests.Contains(position))
+            return;
+
+        placementRequests.Add(position);
+        StartCoroutine(DelayedFruitPlace(fruitLevel, position));
+    }
+
+    private IEnumerator DelayedFruitPlace(FruitInfo.Level fruitLevel, Vector3 position)
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        GameObject newFruit = Instantiate(FruitInfo.Instance().GetFruitPrefabFromLevel(fruitLevel), position, Quaternion.identity);
+        newFruit.GetComponent<Rigidbody2D>().simulated = true; 
+
+        yield return new WaitForEndOfFrame();
+        placementRequests.Remove(position);
     }
 }

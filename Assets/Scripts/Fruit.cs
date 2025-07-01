@@ -4,20 +4,6 @@ using UnityEngine;
 
 public class Fruit : MonoBehaviour
 {
-    public enum Level
-    {
-        None,
-        Blueberry,
-        Raspberry,
-        Tangerine,
-        Pomegranite,
-        Orange,
-        Apple,
-        Peach,
-        Honeydew,
-        Watermelon
-    }
-
     // stuff for combining anim
     private bool lerping = false;
     private float lerpCounter = 0f;
@@ -26,9 +12,9 @@ public class Fruit : MonoBehaviour
     private float startScale;
     private float goalScale;
 
-    public Level level;
+    public FruitInfo.Level level;
 
-    public Level GetLevel() => level;
+    public FruitInfo.Level GetLevel() => level;
 
     private void Update()
     {

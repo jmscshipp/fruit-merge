@@ -7,91 +7,64 @@ using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class FruitPlacer : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject blueBerryPrefab;
-    [SerializeField]
-    private GameObject raspberryPrefab;
-    [SerializeField]
-    private GameObject tangerinePrefab;
-    [SerializeField]
-    private GameObject pomegranitePrefab;
-    [SerializeField]
-    private GameObject orangePrefab;
-    [SerializeField]
-    private GameObject applePrefab;
-    [SerializeField]
-    private GameObject peachPrefab;
-
     [SerializeField, Tooltip("Bag of fruits for next fruit to be, more instances of one fruit will make it more likely to be chosen")]
-    private List<Fruit.Level> randomFruitBag = new List<Fruit.Level>();
-
-    // keeping track of fruit placement reqeusts to get rid of duplicates
-    private List<Vector3> fruitPlacements = new List<Vector3>();
+    private List<FruitInfo.Level> randomFruitBag = new List<FruitInfo.Level>();
 
     [SerializeField]
     private Transform crossHair; // obj showing where next fruit will go
+    private GameObject heldFruit; // fruit in crosshair waiting to be dropped in
+    private GameObject queuedFruit; // fruit in waiting area ready to be held
+
+    // lerping queued fruit into held fruit pos
+    private bool lerping = false;
+    private float lerpTimer = 0f;
+
+    private void Start()
+    {
+        heldFruit = CreateFruit(randomFruitBag[(int)Random.Range(0f, randomFruitBag.Count - 1)], crossHair.position);
+        queuedFruit = CreateFruit(randomFruitBag[(int)Random.Range(0f, randomFruitBag.Count - 1)], transform.position);
+    }
 
     // Update is called once per frame
     void Update()
     {
         crossHair.position = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, crossHair.position.y, 0f);
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !lerping)
         {
-            PlaceFruit(randomFruitBag[(int)Random.Range(0f, randomFruitBag.Count - 1)], crossHair.position);
+            ReleaseFruit();
+        }
+
+        if (lerping) // moving queued fruit to held fruit pos
+        {
+            lerpTimer += Time.deltaTime * 4f;
+            heldFruit.transform.position = Vector2.Lerp(transform.position, crossHair.position, lerpTimer);
+            if (lerpTimer >= 1f)
+                lerping = false;
+        }
+        else // or having held fruit follow crosshair
+        {
+            if (heldFruit != null)
+                heldFruit.transform.position = crossHair.position;
         }
     }
 
-    // called by player when they place fruit and by collision resolver to combine fruits into a new one
-    public void PlaceFruit(Fruit.Level fruitLevel, Vector3 position)
+    // fruit currently held in crosshair goes down into the pit
+    private void ReleaseFruit()
     {
-        // this is a duplicate request from the other side of a collision...
-        if (fruitPlacements.Contains(position))
-            return;
-
-        fruitPlacements.Add(position);
-        StartCoroutine(DelayedFruitPlace(fruitLevel, position));
+        // releasing held fruit
+        heldFruit.transform.position = crossHair.position; // teleport fruit to crosshair pos in case it was in the middle of lerping
+        heldFruit.GetComponent<Rigidbody2D>().simulated = true;
+        heldFruit = queuedFruit;
+        lerpTimer = 0f;
+        lerping = true; // move held fruit from queued pos to held pos
+        // load in a new fruit to be displayed at the top, ready to be loaded into crosshair
+        queuedFruit = CreateFruit(randomFruitBag[(int)Random.Range(0f, randomFruitBag.Count - 1)], transform.position);
     }
 
-    private IEnumerator DelayedFruitPlace(Fruit.Level fruitLevel, Vector3 position)
+    // called by player when they place fruit
+    public GameObject CreateFruit(FruitInfo.Level fruitLevel, Vector3 position)
     {
-        yield return new WaitForSeconds(0.1f);
-
-        Instantiate(GetFruitPrefabFromLevel(fruitLevel), position, Quaternion.identity);
-
-        yield return new WaitForEndOfFrame();
-        fruitPlacements.Remove(position);
-    }
-
-    private GameObject GetFruitPrefabFromLevel(Fruit.Level fruitLevel)
-    {
-        GameObject newFruit = null;
-
-        switch (fruitLevel)
-        {
-            case Fruit.Level.Blueberry:
-                newFruit = blueBerryPrefab;
-                break;
-            case Fruit.Level.Raspberry:
-                newFruit = raspberryPrefab;
-                break;
-            case Fruit.Level.Tangerine:
-                newFruit = tangerinePrefab;
-                break;
-            case Fruit.Level.Pomegranite:
-                newFruit = pomegranitePrefab;
-                break;
-            case Fruit.Level.Orange:
-                newFruit = orangePrefab;
-                break;
-            case Fruit.Level.Apple:
-                newFruit = applePrefab;
-                break;
-            case Fruit.Level.Peach:
-                newFruit = peachPrefab;
-                break;
-        }
-
-        return newFruit;
+        return Instantiate(FruitInfo.Instance().GetFruitPrefabFromLevel(fruitLevel), position, Quaternion.identity);
     }
 }
