@@ -15,6 +15,10 @@ public class FruitPlacer : MonoBehaviour
     private GameObject heldFruit; // fruit in crosshair waiting to be dropped in
     private GameObject queuedFruit; // fruit in waiting area ready to be held
 
+    // limits of where the crosshair can go
+    private float leftXBoundary = 0f;
+    private float rightXBoundary = 0f;
+
     // lerping queued fruit into held fruit pos
     private bool lerping = false;
     private float lerpTimer = 0f;
@@ -23,15 +27,19 @@ public class FruitPlacer : MonoBehaviour
     {
         heldFruit = CreateFruit(randomFruitBag[(int)Random.Range(0f, randomFruitBag.Count - 1)], crossHair.position);
         queuedFruit = CreateFruit(randomFruitBag[(int)Random.Range(0f, randomFruitBag.Count - 1)], transform.position);
+        UpdateCrossHairBoundaries();
     }
 
     // Update is called once per frame
     void Update()
     {
-        crossHair.position = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, crossHair.position.y, 0f);
+        // set crosshair position
+        float clampedX = Mathf.Clamp(Camera.main.ScreenToWorldPoint(Input.mousePosition).x,
+            leftXBoundary, rightXBoundary);
+        crossHair.position = new Vector3(clampedX, crossHair.position.y, 0f);
 
         if (Input.GetKeyDown(KeyCode.Mouse0) && !lerping)
-        {
+        { 
             ReleaseFruit();
         }
 
@@ -56,6 +64,7 @@ public class FruitPlacer : MonoBehaviour
         heldFruit.transform.position = crossHair.position; // teleport fruit to crosshair pos in case it was in the middle of lerping
         heldFruit.GetComponent<Rigidbody2D>().simulated = true;
         heldFruit = queuedFruit;
+        UpdateCrossHairBoundaries();
         lerpTimer = 0f;
         lerping = true; // move held fruit from queued pos to held pos
         // load in a new fruit to be displayed at the top, ready to be loaded into crosshair
@@ -66,5 +75,11 @@ public class FruitPlacer : MonoBehaviour
     public GameObject CreateFruit(FruitInfo.Level fruitLevel, Vector3 position)
     {
         return Instantiate(FruitInfo.Instance().GetFruitPrefabFromLevel(fruitLevel), position, Quaternion.identity);
+    }
+
+    private void UpdateCrossHairBoundaries()
+    {
+        leftXBoundary = -3f + heldFruit.transform.localScale.x / 2f;
+        rightXBoundary = 3f - heldFruit.transform.localScale.x / 2f;
     }
 }
