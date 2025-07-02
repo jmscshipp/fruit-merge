@@ -11,6 +11,9 @@ public class Fruit : MonoBehaviour
     private Vector3 goalPos;
     private float startScale;
     private float goalScale;
+    [SerializeField, Tooltip("Have to keep this the same as the actual sprite color!")]
+    private Color color;
+    private Color goalColor;
 
     public FruitInfo.Level level;
 
@@ -23,6 +26,7 @@ public class Fruit : MonoBehaviour
             lerpCounter += Time.deltaTime * 10f;
             transform.position = Vector3.Lerp(startPos, goalPos, lerpCounter);
             transform.localScale = Vector3.Lerp(Vector3.one * startScale, Vector3.one * goalScale, lerpCounter);
+            GetComponent<SpriteRenderer>().color = Color.Lerp(color, goalColor, lerpCounter);
             if (lerpCounter >= 1)
                 Destroy(gameObject);
         }
@@ -37,13 +41,17 @@ public class Fruit : MonoBehaviour
         }
     }
 
-    public void Combine(Vector3 goalPosition)
+    public void Combine(Vector3 goalPosition, FruitInfo.Level nextFruitLevel)
     {
         GetComponent<CircleCollider2D>().enabled = false;
         startScale = transform.localScale.x;
         startPos = transform.position;
         goalPos = goalPosition;
         goalScale = transform.localScale.x + 0.2f; // PLACEHOLDER.. should get scale of next fruit
+        goalColor = FruitInfo.Instance().GetFruitPrefabFromLevel(nextFruitLevel).
+            GetComponent<Fruit>().GetColor();
         lerping = true;
     }
+
+    public Color GetColor() => color;
 }

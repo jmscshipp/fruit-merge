@@ -31,11 +31,11 @@ public class CollisionResolver : MonoBehaviour
 
         //if (fruitLevel == FruitInfo.Level.Watermelon)
         // I guess you win??
+        fruitLevel++;
+        obj1.GetComponent<Fruit>().Combine(position, fruitLevel);
+        obj2.GetComponent<Fruit>().Combine(position, fruitLevel);
 
-        obj1.GetComponent<Fruit>().Combine(position);
-        obj2.GetComponent<Fruit>().Combine(position);
-
-        PlaceFruit(++fruitLevel, position);
+        PlaceFruit(fruitLevel, position);
     }
 
     // combining fruit into a new one

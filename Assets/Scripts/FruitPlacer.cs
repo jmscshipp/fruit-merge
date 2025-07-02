@@ -47,6 +47,7 @@ public class FruitPlacer : MonoBehaviour
         {
             lerpTimer += Time.deltaTime * 4f;
             heldFruit.transform.position = Vector2.Lerp(transform.position, crossHair.position, lerpTimer);
+            queuedFruit.transform.position = Vector2.Lerp(transform.position + Vector3.up, transform.position, lerpTimer);
             if (lerpTimer >= 1f)
                 lerping = false;
         }
@@ -68,7 +69,7 @@ public class FruitPlacer : MonoBehaviour
         lerpTimer = 0f;
         lerping = true; // move held fruit from queued pos to held pos
         // load in a new fruit to be displayed at the top, ready to be loaded into crosshair
-        queuedFruit = CreateFruit(randomFruitBag[(int)Random.Range(0f, randomFruitBag.Count - 1)], transform.position);
+        queuedFruit = CreateFruit(randomFruitBag[(int)Random.Range(0f, randomFruitBag.Count - 1)], transform.position + Vector3.up);
     }
 
     // called by player when they place fruit
