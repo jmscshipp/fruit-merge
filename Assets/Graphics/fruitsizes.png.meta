@@ -113,7 +113,7 @@ TextureImporter:
         width: 75
         height: 73
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -134,7 +134,7 @@ TextureImporter:
         width: 83
         height: 85
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -155,7 +155,7 @@ TextureImporter:
         width: 114
         height: 113
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -176,7 +176,7 @@ TextureImporter:
         width: 123
         height: 127
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -197,7 +197,7 @@ TextureImporter:
         width: 169
         height: 168
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -210,7 +210,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 1000040342_5
+      name: 1000040342_9
       rect:
         serializedVersion: 2
         x: 1272
@@ -218,7 +218,7 @@ TextureImporter:
         width: 463
         height: 458
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -231,7 +231,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 1000040342_6
+      name: 1000040342_10
       rect:
         serializedVersion: 2
         x: 1753
@@ -239,7 +239,7 @@ TextureImporter:
         width: 543
         height: 537
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -252,7 +252,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 1000040342_7
+      name: 1000040342_5
       rect:
         serializedVersion: 2
         x: 15
@@ -260,7 +260,7 @@ TextureImporter:
         width: 210
         height: 210
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -273,7 +273,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 1000040342_8
+      name: 1000040342_6
       rect:
         serializedVersion: 2
         x: 239
@@ -281,7 +281,7 @@ TextureImporter:
         width: 260
         height: 265
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -294,7 +294,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 1000040342_9
+      name: 1000040342_7
       rect:
         serializedVersion: 2
         x: 515
@@ -302,7 +302,7 @@ TextureImporter:
         width: 323
         height: 328
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -315,7 +315,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 1000040342_10
+      name: 1000040342_8
       rect:
         serializedVersion: 2
         x: 859
@@ -323,7 +323,7 @@ TextureImporter:
         width: 392
         height: 389
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -348,15 +348,15 @@ TextureImporter:
     nameFileIdTable:
       1000040342_0: 1495854135
       1000040342_1: -680286335
-      1000040342_10: 1085362542
+      1000040342_10: -349868710
       1000040342_2: 428927522
       1000040342_3: -1121652337
       1000040342_4: -360449718
-      1000040342_5: -1808720616
-      1000040342_6: -349868710
-      1000040342_7: 839030166
-      1000040342_8: 247480801
-      1000040342_9: -898577866
+      1000040342_5: 839030166
+      1000040342_6: 247480801
+      1000040342_7: -898577866
+      1000040342_8: 1085362542
+      1000040342_9: -1808720616
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
