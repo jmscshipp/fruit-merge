@@ -80,7 +80,7 @@ public class FruitPlacer : MonoBehaviour
 
     private void UpdateCrossHairBoundaries()
     {
-        leftXBoundary = -3f + heldFruit.transform.localScale.x / 2f;
-        rightXBoundary = 3f - heldFruit.transform.localScale.x / 2f;
+        leftXBoundary = -5.1f + heldFruit.transform.localScale.x / 2f;
+        rightXBoundary = 5.1f - heldFruit.transform.localScale.x / 2f;
     }
 }
