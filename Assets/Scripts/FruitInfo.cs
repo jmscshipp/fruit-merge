@@ -4,34 +4,8 @@ using UnityEngine;
 
 public class FruitInfo : MonoBehaviour
 {
-    public enum Level
-    {
-        None,
-        Blueberry,
-        Raspberry,
-        Tangerine,
-        Pomegranite,
-        Orange,
-        Apple,
-        Peach,
-        Honeydew,
-        Watermelon
-    }
-
-    [SerializeField]
-    private GameObject blueBerryPrefab;
-    [SerializeField]
-    private GameObject raspberryPrefab;
-    [SerializeField]
-    private GameObject tangerinePrefab;
-    [SerializeField]
-    private GameObject pomegranitePrefab;
-    [SerializeField]
-    private GameObject orangePrefab;
-    [SerializeField]
-    private GameObject applePrefab;
-    [SerializeField]
-    private GameObject peachPrefab;
+    [SerializeField, Tooltip("0 is smallest fruit")]
+    private GameObject[] fruitPrefabs;
 
     private static FruitInfo instance;
 
@@ -47,33 +21,14 @@ public class FruitInfo : MonoBehaviour
         return instance;
     }
 
-    public GameObject GetFruitPrefabFromLevel(Level fruitLevel)
+    public GameObject GetFruitPrefabFromLevel(int fruitLevel)
     {
-        GameObject newFruit = null;
+        GameObject newFruit = fruitPrefabs[fruitLevel];
 
-        switch (fruitLevel)
+        if (newFruit == null)
         {
-            case Level.Blueberry:
-                newFruit = blueBerryPrefab;
-                break;
-            case Level.Raspberry:
-                newFruit = raspberryPrefab;
-                break;
-            case Level.Tangerine:
-                newFruit = tangerinePrefab;
-                break;
-            case Level.Pomegranite:
-                newFruit = pomegranitePrefab;
-                break;
-            case Level.Orange:
-                newFruit = orangePrefab;
-                break;
-            case Level.Apple:
-                newFruit = applePrefab;
-                break;
-            case Level.Peach:
-                newFruit = peachPrefab;
-                break;
+            Debug.LogError("ERROR: a fruit corresponding to level '" + fruitLevel + "' does not exist");
+            return null;
         }
 
         return newFruit;

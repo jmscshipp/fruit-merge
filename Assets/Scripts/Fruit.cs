@@ -15,9 +15,12 @@ public class Fruit : MonoBehaviour
     private Color color;
     private Color goalColor;
 
-    public FruitInfo.Level level;
+    // variable to prevent collision with boundary on the way into the pit
+    private bool inGame = false;
 
-    public FruitInfo.Level GetLevel() => level;
+    public int level;
+
+    public int GetLevel() => level;
 
     private void Update()
     {
@@ -34,14 +37,25 @@ public class Fruit : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Fruit" &&
-            level == collision.gameObject.GetComponent<Fruit>().GetLevel())
+        if (collision.gameObject.tag == "Fruit")
         {
-            CollisionResolver.Instance().ResolveCollision(gameObject, collision.gameObject, collision.contacts[0].point, level);
+            inGame = true;
+
+            if (level == collision.gameObject.GetComponent<Fruit>().GetLevel())
+                CollisionResolver.Instance().ResolveCollision(gameObject, collision.gameObject, collision.contacts[0].point, level);
         }
     }
 
-    public void Combine(Vector3 goalPosition, FruitInfo.Level nextFruitLevel)
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Boundary" && inGame)
+        {
+            // start countdown to restart level
+            GameManager.Instance().EndLevel();
+        }
+    }
+
+    public void Combine(Vector3 goalPosition, int nextFruitLevel)
     {
         GetComponent<CircleCollider2D>().enabled = false;
         startScale = transform.localScale.x;

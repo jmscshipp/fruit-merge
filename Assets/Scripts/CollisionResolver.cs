@@ -23,7 +23,7 @@ public class CollisionResolver : MonoBehaviour
     }
 
     // called by fruit when they collide with another fruit of the same type
-    public void ResolveCollision(GameObject obj1, GameObject obj2, Vector3 position, FruitInfo.Level fruitLevel)
+    public void ResolveCollision(GameObject obj1, GameObject obj2, Vector3 position, int fruitLevel)
     {
         // if one of the objs is null prolly cus another collision already happened involving one of em
         if (obj1 == null || obj2 == null)
@@ -39,7 +39,7 @@ public class CollisionResolver : MonoBehaviour
     }
 
     // combining fruit into a new one
-    public void PlaceFruit(FruitInfo.Level fruitLevel, Vector3 position)
+    public void PlaceFruit(int fruitLevel, Vector3 position)
     {
         // this is a duplicate request from the other side of a collision...
         if (placementRequests.Contains(position))
@@ -49,7 +49,7 @@ public class CollisionResolver : MonoBehaviour
         StartCoroutine(DelayedFruitPlace(fruitLevel, position));
     }
 
-    private IEnumerator DelayedFruitPlace(FruitInfo.Level fruitLevel, Vector3 position)
+    private IEnumerator DelayedFruitPlace(int fruitLevel, Vector3 position)
     {
         yield return new WaitForSeconds(0.1f);
 

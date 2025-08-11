@@ -8,7 +8,7 @@ using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 public class FruitPlacer : MonoBehaviour
 {
     [SerializeField, Tooltip("Bag of fruits for next fruit to be, more instances of one fruit will make it more likely to be chosen")]
-    private List<FruitInfo.Level> randomFruitBag = new List<FruitInfo.Level>();
+    private List<int> randomFruitBag = new List<int>();
 
     [SerializeField]
     private Transform crossHair; // obj showing where next fruit will go
@@ -23,16 +23,19 @@ public class FruitPlacer : MonoBehaviour
     private bool lerping = false;
     private float lerpTimer = 0f;
 
+    private bool canInteract = true;
+
     private void Start()
     {
-        heldFruit = CreateFruit(randomFruitBag[(int)Random.Range(0f, randomFruitBag.Count - 1)], crossHair.position);
-        queuedFruit = CreateFruit(randomFruitBag[(int)Random.Range(0f, randomFruitBag.Count - 1)], transform.position);
-        UpdateCrossHairBoundaries();
+        BeginLevel();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!canInteract)
+            return;
+
         // set crosshair position
         float clampedX = Mathf.Clamp(Camera.main.ScreenToWorldPoint(Input.mousePosition).x,
             leftXBoundary, rightXBoundary);
@@ -58,6 +61,21 @@ public class FruitPlacer : MonoBehaviour
         }
     }
 
+    public void BeginLevel()
+    {
+        heldFruit = CreateFruit(randomFruitBag[(int)Random.Range(0f, randomFruitBag.Count - 1)], crossHair.position);
+        queuedFruit = CreateFruit(randomFruitBag[(int)Random.Range(0f, randomFruitBag.Count - 1)], transform.position);
+        UpdateCrossHairBoundaries();
+        lerpTimer = 0f;
+        canInteract = true;
+    }
+
+    public void EndLevel()
+    {
+        canInteract = false;
+        lerping = false;
+    }
+
     // fruit currently held in crosshair goes down into the pit
     private void ReleaseFruit()
     {
@@ -73,12 +91,12 @@ public class FruitPlacer : MonoBehaviour
     }
 
     // called by player when they place fruit
-    public GameObject CreateFruit(FruitInfo.Level fruitLevel, Vector3 position)
+    public GameObject CreateFruit(int fruitLevel, Vector3 position)
     {
         return Instantiate(FruitInfo.Instance().GetFruitPrefabFromLevel(fruitLevel), position, Quaternion.identity);
     }
 
-    private void UpdateCrossHairBoundaries()
+    private void UpdateCrossHairBoundaries() // need to come back here and fix boundaries based on fruit sizes
     {
         leftXBoundary = -5.1f + heldFruit.transform.localScale.x / 2f;
         rightXBoundary = 5.1f - heldFruit.transform.localScale.x / 2f;
