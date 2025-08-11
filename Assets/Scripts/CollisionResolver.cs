@@ -54,7 +54,11 @@ public class CollisionResolver : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         GameObject newFruit = Instantiate(FruitInfo.Instance().GetFruitPrefabFromLevel(fruitLevel), position, Quaternion.identity);
-        newFruit.GetComponent<Rigidbody2D>().simulated = true; 
+        newFruit.GetComponent<Rigidbody2D>().simulated = true;
+
+        int pointsFromFruit = FruitInfo.Instance().GetFruitPointValueFromLevel(fruitLevel);
+        UIManager.Instance().CreateFruitPointText(pointsFromFruit, newFruit.transform.position);
+        ScoreManager.Instance().AddToScore(pointsFromFruit);
 
         yield return new WaitForEndOfFrame();
         placementRequests.Remove(position);

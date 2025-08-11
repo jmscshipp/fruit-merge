@@ -42,8 +42,7 @@ public class GameManager : MonoBehaviour
         foreach (GameObject fruit in fruits)
             Destroy(fruit);
 
-        // reset score
-
+        ScoreManager.Instance().ResetLevelScore();
         fruitplacer.BeginLevel();
     }
 }

@@ -6,7 +6,8 @@ public class FruitInfo : MonoBehaviour
 {
     [SerializeField, Tooltip("0 is smallest fruit")]
     private GameObject[] fruitPrefabs;
-
+    [SerializeField, Tooltip("must be same length as fruitPrefabs list")]
+    private int[] pointValues;
     private static FruitInfo instance;
 
     private void Awake()
@@ -32,5 +33,16 @@ public class FruitInfo : MonoBehaviour
         }
 
         return newFruit;
+    }
+
+    public int GetFruitPointValueFromLevel(int fruitLevel)
+    {
+        if (fruitLevel > pointValues.Length - 1)
+        {
+            Debug.LogError("ERROR: a point value corresponding to level '" + fruitLevel + "' does not exist");
+            return 0;
+        }
+
+        return pointValues[fruitLevel];
     }
 }
