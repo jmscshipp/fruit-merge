@@ -222,5 +222,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: {r: 0.95686275, g: 0.78431374, b: 0.6156863, a: 1}
-  pointValue: 64
   level: 6

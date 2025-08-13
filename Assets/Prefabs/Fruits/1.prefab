@@ -138,7 +138,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: {r: 0.7372549, g: 0.2901961, b: 0.50980395, a: 1}
-  pointValue: 2
   level: 1
 --- !u!1 &5038182146676475515
 GameObject:

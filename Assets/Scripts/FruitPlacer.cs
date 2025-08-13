@@ -22,6 +22,8 @@ public class FruitPlacer : MonoBehaviour
     // lerping queued fruit into held fruit pos
     private bool lerping = false;
     private float lerpTimer = 0f;
+    [SerializeField]
+    private AnimationCurve lerpCurve;
 
     private bool canInteract = true;
 
@@ -48,9 +50,9 @@ public class FruitPlacer : MonoBehaviour
 
         if (lerping) // moving queued fruit to held fruit pos
         {
-            lerpTimer += Time.deltaTime * 4f;
-            heldFruit.transform.position = Vector2.Lerp(transform.position, crossHair.position, lerpTimer);
-            queuedFruit.transform.position = Vector2.Lerp(transform.position + Vector3.up, transform.position, lerpTimer);
+            lerpTimer += Time.deltaTime * 3f;
+            heldFruit.transform.position = Vector2.Lerp(transform.position, crossHair.position, lerpCurve.Evaluate(lerpTimer));
+            queuedFruit.transform.position = Vector2.Lerp(transform.position + Vector3.up, transform.position, lerpCurve.Evaluate(lerpTimer));
             if (lerpTimer >= 1f)
                 lerping = false;
         }
@@ -82,6 +84,7 @@ public class FruitPlacer : MonoBehaviour
         // releasing held fruit
         heldFruit.transform.position = crossHair.position; // teleport fruit to crosshair pos in case it was in the middle of lerping
         heldFruit.GetComponent<Rigidbody2D>().simulated = true;
+        heldFruit.GetComponent<Rigidbody2D>().velocity = Vector3.down * 8f;
         heldFruit = queuedFruit;
         UpdateCrossHairBoundaries();
         lerpTimer = 0f;
