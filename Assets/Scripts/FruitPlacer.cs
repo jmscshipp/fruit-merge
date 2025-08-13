@@ -101,7 +101,9 @@ public class FruitPlacer : MonoBehaviour
 
     private void UpdateCrossHairBoundaries() // need to come back here and fix boundaries based on fruit sizes
     {
-        leftXBoundary = -5.1f + heldFruit.transform.localScale.x / 2f;
-        rightXBoundary = 5.1f - heldFruit.transform.localScale.x / 2f;
+        // might need to revisit this if using multiple types of coliders on the same fruit for more complex shapes
+        float colliderRadius = heldFruit.GetComponent<CircleCollider2D>().radius;
+        leftXBoundary = -5.15f + colliderRadius;
+        rightXBoundary = 5.15f - colliderRadius;
     }
 }
