@@ -5,7 +5,7 @@ using UnityEngine;
 public class CollisionResolver : MonoBehaviour
 {
     // keeping track of fruit placement requests to get rid of duplicates
-    private List<Vector3> placementRequests = new List<Vector3>();
+    public HashSet<int> placementRequests = new HashSet<int>();
 
     private static CollisionResolver instance;
 
@@ -17,6 +17,18 @@ public class CollisionResolver : MonoBehaviour
         instance = this;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            Debug.Log("printing request hashset:\n");
+            foreach (int id in placementRequests)
+            {
+                Debug.Log("\n    Placement request ID: " + id);
+            }
+        }
+
+    }
     public static CollisionResolver Instance()
     {
         return instance;
@@ -29,38 +41,38 @@ public class CollisionResolver : MonoBehaviour
         if (obj1 == null || obj2 == null)
             return;
 
-        //if (fruitLevel == FruitInfo.Level.Watermelon)
-        // I guess you win??
-        fruitLevel++;
-        obj1.GetComponent<Fruit>().Combine(position, fruitLevel);
-        obj2.GetComponent<Fruit>().Combine(position, fruitLevel);
-
-        PlaceFruit(fruitLevel, position);
-    }
-
-    // combining fruit into a new one
-    public void PlaceFruit(int fruitLevel, Vector3 position)
-    {
-        // this is a duplicate request from the other side of a collision...
-        if (placementRequests.Contains(position))
+        // there's already a collision being resolved involving one of these fruits
+        if (placementRequests.Contains(obj1.GetInstanceID()) || placementRequests.Contains(obj2.GetInstanceID()))
             return;
 
-        placementRequests.Add(position);
-        StartCoroutine(DelayedFruitPlace(fruitLevel, position));
-    }
+        //if (fruitLevel == FruitInfo.Level.Watermelon)
+        // I guess you win??
 
-    private IEnumerator DelayedFruitPlace(int fruitLevel, Vector3 position)
-    {
-        yield return new WaitForSeconds(0.1f);
+        // disable collided fruits and play their effects
+        fruitLevel++;
+        obj1.GetComponent<Fruit>().PlayCombinationEffects(position, fruitLevel);
+        obj2.GetComponent<Fruit>().PlayCombinationEffects(position, fruitLevel);
 
+        // prevent further collisions with these fruits
+        placementRequests.Add(obj1.GetInstanceID());
+        placementRequests.Add(obj2.GetInstanceID());
+        StartCoroutine(DelayedRemovePlacementRequest(obj1.GetInstanceID()));
+        StartCoroutine(DelayedRemovePlacementRequest(obj2.GetInstanceID()));
+
+        // instantiate and position new fruit as collision result
         GameObject newFruit = Instantiate(FruitInfo.Instance().GetFruitPrefabFromLevel(fruitLevel), position, Quaternion.identity);
         newFruit.GetComponent<Rigidbody2D>().simulated = true;
 
+        // scoring stuff
         int pointsFromFruit = FruitInfo.Instance().GetFruitPointValueFromLevel(fruitLevel);
         UIManager.Instance().CreateFruitPointText(pointsFromFruit, newFruit.transform.position);
         ScoreManager.Instance().AddToScore(pointsFromFruit);
+    }
 
-        yield return new WaitForEndOfFrame();
-        placementRequests.Remove(position);
+    // delayed removal of placement request hashset entry just to keep it from getting bloated
+    private IEnumerator DelayedRemovePlacementRequest(int placementRequest)
+    {
+        yield return new WaitForSeconds(1f);
+        placementRequests.Remove(placementRequest);
     }
 }

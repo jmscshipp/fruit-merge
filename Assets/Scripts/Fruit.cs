@@ -55,7 +55,7 @@ public class Fruit : MonoBehaviour
         }
     }
 
-    public void Combine(Vector3 goalPosition, int nextFruitLevel)
+    public void PlayCombinationEffects(Vector3 goalPosition, int nextFruitLevel)
     {
         GetComponent<CircleCollider2D>().enabled = false;
         startScale = transform.localScale.x;
