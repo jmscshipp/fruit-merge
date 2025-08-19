@@ -40,15 +40,13 @@ public class Boundary : MonoBehaviour
         }
     }
 
-    public void AddFruitCollision(Object fruit)
+    public void TrackFruit(Object fruit)
     {
         collidingFruits.Add(new CollisionEntry(fruit.GetInstanceID(), 0f));
-        Debug.Log("new fruit entered boundary");
     }
 
-    public void RemoveFruitCollision(Object fruit)
+    public void StopTrackingFruit(Object fruit)
     {
         collidingFruits.Remove(collidingFruits.FirstOrDefault(entry => entry.objectId == fruit.GetInstanceID()));
-        Debug.Log("fruit exited boundary");
     }
 }

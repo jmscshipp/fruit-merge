@@ -21,6 +21,11 @@ public class Fruit : MonoBehaviour
 
     public int GetLevel() => level;
 
+    private void Awake()
+    {
+        boundary = GameObject.FindGameObjectWithTag("Boundary").GetComponent<Boundary>();
+    }
+
     private void Update()
     {
         if (lerping)
@@ -31,10 +36,19 @@ public class Fruit : MonoBehaviour
             GetComponent<SpriteRenderer>().color = Color.Lerp(color, goalColor, lerpCounter);
             if (lerpCounter >= 1)
             {
-                boundary.RemoveFruitCollision(gameObject); // remove from boundary collision list in case still overlapping
+                if (boundary != null)
+                    boundary.StopTrackingFruit(gameObject); // remove from boundary collision list in case still overlapping
                 Destroy(gameObject);
             }
         }
+    }
+
+    // called when fruit is entered into the game, either dropped from fruit placer or spawned from combination
+    public void PlayFruit()
+    {
+        GetComponent<Rigidbody2D>().simulated = true;
+        if (transform.position.y >= 4.8f) // if fruit is spawned in the pit, it won't be tracked
+            boundary.TrackFruit(gameObject);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -49,17 +63,16 @@ public class Fruit : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Boundary")
-        {
-            if (boundary == null)
-                boundary = collision.gameObject.GetComponent<Boundary>();
-            boundary.AddFruitCollision(gameObject);
-        }
+            boundary.StopTrackingFruit(gameObject);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Boundary")
-            boundary.RemoveFruitCollision(gameObject);
+        {
+            if (transform.position.y >= 4.8f)
+                boundary.TrackFruit(gameObject);
+        }
     }
 
     public void PlayCombinationEffects(Vector3 goalPosition, int nextFruitLevel)

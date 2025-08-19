@@ -83,7 +83,7 @@ public class FruitPlacer : MonoBehaviour
     {
         // releasing held fruit
         heldFruit.transform.position = crossHair.position; // teleport fruit to crosshair pos in case it was in the middle of lerping
-        heldFruit.GetComponent<Rigidbody2D>().simulated = true;
+        heldFruit.GetComponent<Fruit>().PlayFruit(); // enable fruit physics and collision
         heldFruit.GetComponent<Rigidbody2D>().velocity = Vector3.down * 8f;
         heldFruit = queuedFruit;
         UpdateCrossHairBoundaries();
