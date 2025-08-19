@@ -2041,6 +2041,7 @@ GameObject:
   - component: {fileID: 1466927602}
   - component: {fileID: 1466927601}
   - component: {fileID: 1466927603}
+  - component: {fileID: 1466927604}
   m_Layer: 0
   m_Name: Boundary
   m_TagString: Boundary
@@ -2141,6 +2142,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1466927604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466927600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb34c443b93ee434b80066537abc5049, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  overlapTimeMax: 2
 --- !u!1 &1619881296
 GameObject:
   m_ObjectHideFlags: 0

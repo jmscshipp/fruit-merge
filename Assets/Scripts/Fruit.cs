@@ -15,8 +15,7 @@ public class Fruit : MonoBehaviour
     private Color color;
     private Color goalColor;
 
-    // variable to prevent collision with boundary on the way into the pit
-    private bool inGame = false;
+    private Boundary boundary; // assigned when collision occurs
 
     public int level;
 
@@ -31,7 +30,10 @@ public class Fruit : MonoBehaviour
             transform.localScale = Vector3.Lerp(Vector3.one * startScale, Vector3.one * goalScale, lerpCounter);
             GetComponent<SpriteRenderer>().color = Color.Lerp(color, goalColor, lerpCounter);
             if (lerpCounter >= 1)
+            {
+                boundary.RemoveFruitCollision(gameObject); // remove from boundary collision list in case still overlapping
                 Destroy(gameObject);
+            }
         }
     }
 
@@ -39,8 +41,6 @@ public class Fruit : MonoBehaviour
     {
         if (collision.gameObject.tag == "Fruit")
         {
-            inGame = true;
-
             if (level == collision.gameObject.GetComponent<Fruit>().GetLevel())
                 CollisionResolver.Instance().ResolveCollision(gameObject, collision.gameObject, collision.contacts[0].point, level);
         }
@@ -48,11 +48,18 @@ public class Fruit : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Boundary" && inGame)
+        if (collision.gameObject.tag == "Boundary")
         {
-            // start countdown to restart level
-            GameManager.Instance().EndLevel();
+            if (boundary == null)
+                boundary = collision.gameObject.GetComponent<Boundary>();
+            boundary.AddFruitCollision(gameObject);
         }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Boundary")
+            boundary.RemoveFruitCollision(gameObject);
     }
 
     public void PlayCombinationEffects(Vector3 goalPosition, int nextFruitLevel)

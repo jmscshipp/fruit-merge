@@ -17,18 +17,6 @@ public class CollisionResolver : MonoBehaviour
         instance = this;
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            Debug.Log("printing request hashset:\n");
-            foreach (int id in placementRequests)
-            {
-                Debug.Log("\n    Placement request ID: " + id);
-            }
-        }
-
-    }
     public static CollisionResolver Instance()
     {
         return instance;
