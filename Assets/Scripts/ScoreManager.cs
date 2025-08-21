@@ -5,8 +5,10 @@ using UnityEngine;
 public class ScoreManager : MonoBehaviour
 {
     private int currentLevelScore = 0;
-
+    private int localHighScore = 0;
     private static ScoreManager instance;
+
+    private bool newLocalHighScoreThisSession = false;
 
     private void Awake()
     {
@@ -29,11 +31,24 @@ public class ScoreManager : MonoBehaviour
     {
         currentLevelScore += additionalScore;
         UIManager.Instance().UpdateCurrentScoreText(currentLevelScore);
+
+        if (currentLevelScore > localHighScore)
+        {
+            localHighScore = currentLevelScore;
+            PlayerPrefs.SetInt("LocalHighScore", localHighScore);
+            newLocalHighScoreThisSession = true;
+        }
     }
 
     public void ResetLevelScore()
     {
         currentLevelScore = 0;
+        localHighScore = PlayerPrefs.GetInt("LocalHighScore", 0);
+        newLocalHighScoreThisSession = false;
         UIManager.Instance().UpdateCurrentScoreText(currentLevelScore);
+        UIManager.Instance().UpdateHighScoreText(localHighScore);
     }
+
+    public int GetCurrentLevelScore() => currentLevelScore;
+    public bool IsNewLocalHighScoreThisSession() => newLocalHighScoreThisSession;
 }

@@ -11,6 +11,8 @@ public class UIManager : MonoBehaviour
     private GameObject fruitPointTextPrefab;
     [SerializeField]
     private TMP_Text currentScoreText;
+    [SerializeField]
+    private TMP_Text highScoreText;
 
     private static UIManager instance;
 
@@ -47,5 +49,10 @@ public class UIManager : MonoBehaviour
     public void UpdateCurrentScoreText(int score)
     {
         currentScoreText.text = score.ToString();
+    }
+
+    public void UpdateHighScoreText(int score)
+    {
+        highScoreText.text = score.ToString();
     }
 }
