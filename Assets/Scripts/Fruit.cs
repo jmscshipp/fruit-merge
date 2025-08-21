@@ -47,7 +47,7 @@ public class Fruit : MonoBehaviour
     public void Play()
     {
         GetComponent<Rigidbody2D>().simulated = true;
-        if (transform.position.y >= 4.8f) // if fruit is spawned in the pit, it won't be tracked
+        if (transform.position.y >= 3.69f) // if fruit is spawned in the pit, it won't be tracked
             boundary.TrackFruit(gameObject);
     }
 
