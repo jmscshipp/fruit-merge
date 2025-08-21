@@ -9,7 +9,6 @@ public class Boundary : MonoBehaviour
 {
     [SerializeField]
     private float overlapTimeMax = 2f; // time in seconds before level restart when fruit overlaps boundary
-    private bool gameActive = true; // marked false when game is over
 
     // for use keeping track of currently overlapping fruits
     class CollisionEntry
@@ -28,15 +27,15 @@ public class Boundary : MonoBehaviour
 
     void Update()
     {
-        if (gameActive == false)
-            return;
-
         // increase time for any overlapping fruits
         foreach (CollisionEntry entry in collidingFruits)
         {
             entry.timeOverlapping += Time.deltaTime;
             if (entry.timeOverlapping > overlapTimeMax)
+            {
                 GameManager.Instance().EndLevel();
+                break;
+            }
         }
     }
 
@@ -48,5 +47,10 @@ public class Boundary : MonoBehaviour
     public void StopTrackingFruit(Object fruit)
     {
         collidingFruits.Remove(collidingFruits.FirstOrDefault(entry => entry.objectId == fruit.GetInstanceID()));
+    }
+
+    public void ClearAllTrackedFruits()
+    {
+        collidingFruits.Clear();
     }
 }

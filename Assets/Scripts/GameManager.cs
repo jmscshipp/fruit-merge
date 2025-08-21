@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private FruitPlacer fruitplacer;
+    [SerializeField]
+    private Boundary boundary;
 
     private void Awake()
     {
@@ -21,26 +23,30 @@ public class GameManager : MonoBehaviour
         return instance;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    // called when game is over
     public void EndLevel()
     {
-        // stop player interactivity here
-        // and freeze all fruit where they are
         // add cool end game animation here? like fruit scattering everywhere
+
+        GameObject[] fruits = GameObject.FindGameObjectsWithTag("Fruit");
+        foreach (GameObject fruit in fruits)
+            fruit.GetComponent<Fruit>().Freeze();
+
         fruitplacer.EndLevel();
+        boundary.ClearAllTrackedFruits();
         UIManager.Instance().OpenEndgamePopup();
     }
 
+    // called when reset button is pressed
     public void ResetLevel()
     {
         GameObject[] fruits = GameObject.FindGameObjectsWithTag("Fruit");
         foreach (GameObject fruit in fruits)
             Destroy(fruit);
+
+        // clearing again because when fruits are 
+        // deleted, they get tracked by boundary from leavin the trigger
+        boundary.ClearAllTrackedFruits(); 
 
         ScoreManager.Instance().ResetLevelScore();
         fruitplacer.BeginLevel();

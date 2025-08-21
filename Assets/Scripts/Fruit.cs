@@ -44,11 +44,18 @@ public class Fruit : MonoBehaviour
     }
 
     // called when fruit is entered into the game, either dropped from fruit placer or spawned from combination
-    public void PlayFruit()
+    public void Play()
     {
         GetComponent<Rigidbody2D>().simulated = true;
         if (transform.position.y >= 4.8f) // if fruit is spawned in the pit, it won't be tracked
             boundary.TrackFruit(gameObject);
+    }
+
+    // called when game is over to prevent further fruit action
+    public void Freeze()
+    {
+        GetComponent<Rigidbody2D>().simulated = false;
+        GetComponent<CircleCollider2D>().enabled = false;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -60,12 +67,14 @@ public class Fruit : MonoBehaviour
         }
     }
 
+    // for use with out of bounds boundary
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Boundary")
             boundary.StopTrackingFruit(gameObject);
     }
 
+    // for use with out of bounds boundary
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Boundary")
@@ -75,6 +84,7 @@ public class Fruit : MonoBehaviour
         }
     }
 
+    // called when this fruit and another combine
     public void PlayCombinationEffects(Vector3 goalPosition, int nextFruitLevel)
     {
         GetComponent<CircleCollider2D>().enabled = false;

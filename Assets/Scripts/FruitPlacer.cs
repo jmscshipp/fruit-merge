@@ -65,6 +65,12 @@ public class FruitPlacer : MonoBehaviour
 
     public void BeginLevel()
     {
+        // reset old fruits if there are any
+        if (heldFruit != null)
+            Destroy(heldFruit);
+        if (queuedFruit != null)
+            Destroy(queuedFruit);
+
         heldFruit = CreateFruit(randomFruitBag[(int)Random.Range(0f, randomFruitBag.Count - 1)], crossHair.position);
         queuedFruit = CreateFruit(randomFruitBag[(int)Random.Range(0f, randomFruitBag.Count - 1)], transform.position);
         UpdateCrossHairBoundaries();
@@ -83,7 +89,7 @@ public class FruitPlacer : MonoBehaviour
     {
         // releasing held fruit
         heldFruit.transform.position = crossHair.position; // teleport fruit to crosshair pos in case it was in the middle of lerping
-        heldFruit.GetComponent<Fruit>().PlayFruit(); // enable fruit physics and collision
+        heldFruit.GetComponent<Fruit>().Play(); // enable fruit physics and collision
         heldFruit.GetComponent<Rigidbody2D>().velocity = Vector3.down * 8f;
         heldFruit = queuedFruit;
         UpdateCrossHairBoundaries();
@@ -96,7 +102,9 @@ public class FruitPlacer : MonoBehaviour
     // called by player when they place fruit
     public GameObject CreateFruit(int fruitLevel, Vector3 position)
     {
-        return Instantiate(FruitInfo.Instance().GetFruitPrefabFromLevel(fruitLevel), position, Quaternion.identity);
+        GameObject newFruit = Instantiate(FruitInfo.Instance().GetFruitPrefabFromLevel(fruitLevel), position, Quaternion.identity);
+        newFruit.name = "" + (int)Random.Range(0f, 20f);
+        return newFruit;
     }
 
     private void UpdateCrossHairBoundaries() // need to come back here and fix boundaries based on fruit sizes

@@ -49,7 +49,7 @@ public class CollisionResolver : MonoBehaviour
 
         // instantiate and position new fruit as collision result
         GameObject newFruit = Instantiate(FruitInfo.Instance().GetFruitPrefabFromLevel(fruitLevel), position, Quaternion.identity);
-        newFruit.GetComponent<Fruit>().PlayFruit(); // enable fruit physics and collision
+        newFruit.GetComponent<Fruit>().Play(); // enable fruit physics and collision
 
         // scoring stuff
         int pointsFromFruit = FruitInfo.Instance().GetFruitPointValueFromLevel(fruitLevel);
