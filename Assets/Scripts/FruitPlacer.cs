@@ -25,12 +25,7 @@ public class FruitPlacer : MonoBehaviour
     [SerializeField]
     private AnimationCurve lerpCurve;
 
-    private bool canInteract = true;
-
-    private void Start()
-    {
-        BeginLevel();
-    }
+    private bool canInteract = false;
 
     // Update is called once per frame
     void Update()

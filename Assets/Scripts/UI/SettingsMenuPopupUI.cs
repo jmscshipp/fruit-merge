@@ -2,11 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PauseMenuPopupUI : MonoBehaviour
+public class SettingsMenuPopupUI : MonoBehaviour
 {
-    public void Open()
+    // buttons that should only be active in regular gameplay
+    [SerializeField]
+    private GameObject resumeButton;
+    [SerializeField]
+    private GameObject restartButton;
+
+    public void Open(bool inMainMenu = false)
     {
         gameObject.SetActive(true);
+        if (inMainMenu)
+        {
+            resumeButton.SetActive(false);
+            restartButton.SetActive(false);
+        }
+        else // in regular game play
+        {
+            resumeButton.SetActive(true);
+            restartButton.SetActive(true);
+        }
     }
 
     public void Close()
@@ -33,6 +49,11 @@ public class PauseMenuPopupUI : MonoBehaviour
     public void ToggleMusicButton()
     {
         // toggle music
+    }
+
+    public void ResetHighscoreButton()
+    {
+    
     }
 
     public void ExitToMenuButton()
