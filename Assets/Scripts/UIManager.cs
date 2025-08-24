@@ -8,6 +8,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private EndgamePopupUI endgamePopup;
     [SerializeField]
+    private GameObject mainMenu;
+    [SerializeField]
     private GameObject fruitPointTextPrefab;
     [SerializeField]
     private TMP_Text currentScoreText;
@@ -54,5 +56,10 @@ public class UIManager : MonoBehaviour
     public void UpdateHighScoreText(int score)
     {
         highScoreText.text = score.ToString();
+    }
+
+    public void GoToMainMenu()
+    {
+        mainMenu.SetActive(true);
     }
 }

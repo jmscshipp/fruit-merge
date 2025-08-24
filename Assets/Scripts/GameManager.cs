@@ -23,8 +23,8 @@ public class GameManager : MonoBehaviour
         return instance;
     }
 
-    // called when game is over
-    public void EndLevel()
+    // called when game is lost
+    public void EndLevel(bool skipToMainMenu = false)
     {
         // add cool end game animation here? like fruit scattering everywhere
 
@@ -34,6 +34,10 @@ public class GameManager : MonoBehaviour
 
         fruitplacer.EndLevel();
         boundary.ClearAllTrackedFruits();
+
+        if (skipToMainMenu)
+            return;
+
         UIManager.Instance().OpenEndgamePopup();
     }
 

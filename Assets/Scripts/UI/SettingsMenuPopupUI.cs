@@ -9,6 +9,10 @@ public class SettingsMenuPopupUI : MonoBehaviour
     private GameObject resumeButton;
     [SerializeField]
     private GameObject restartButton;
+    [SerializeField]
+    private GameObject returnToMenuButton;
+    [SerializeField]
+    private GameObject exitFromGameButton;
 
     public void Open(bool inMainMenu = false)
     {
@@ -17,11 +21,15 @@ public class SettingsMenuPopupUI : MonoBehaviour
         {
             resumeButton.SetActive(false);
             restartButton.SetActive(false);
+            exitFromGameButton.SetActive(false);
+            returnToMenuButton.SetActive(true);
         }
         else // in regular game play
         {
             resumeButton.SetActive(true);
             restartButton.SetActive(true);
+            exitFromGameButton.SetActive(true);
+            returnToMenuButton.SetActive(false);
         }
     }
 
@@ -56,9 +64,17 @@ public class SettingsMenuPopupUI : MonoBehaviour
     
     }
 
-    public void ExitToMenuButton()
+    // for use exiting settings modal from the main menu
+    public void ReturnToMenuButton()
     {
-        GameManager.Instance().ResetLevel();
         Close();
+    }
+
+    // for use exiting to the main menu from normal gameplay
+    public void ExitFromGameButton()
+    {
+        GameManager.Instance().EndLevel(true);
+        Close();
+        UIManager.Instance().GoToMainMenu();
     }
 }
