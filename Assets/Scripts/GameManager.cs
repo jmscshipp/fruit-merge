@@ -55,4 +55,16 @@ public class GameManager : MonoBehaviour
         ScoreManager.Instance().ResetLevelScore();
         fruitplacer.BeginLevel();
     }
+
+    public void PauseLevel()
+    {
+        boundary.Pause();
+        fruitplacer.Pause();
+    }
+
+    public void ResumeLevel()
+    {
+        boundary.Resume();
+        fruitplacer.Resume();
+    }
 }

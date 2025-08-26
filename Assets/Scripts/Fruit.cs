@@ -16,7 +16,7 @@ public class Fruit : MonoBehaviour
     private Color goalColor;
 
     private Boundary boundary; // assigned when collision occurs
-
+    private bool played = false; // true when fruit has been active in the pit
     public int level;
 
     public int GetLevel() => level;
@@ -49,13 +49,22 @@ public class Fruit : MonoBehaviour
         GetComponent<Rigidbody2D>().simulated = true;
         if (transform.position.y >= 3.69f) // if fruit is spawned in the pit, it won't be tracked
             boundary.TrackFruit(gameObject);
+        played = true;
     }
 
-    // called when game is over to prevent further fruit action
+    // called when game is over or pauseed to prevent further action
     public void Freeze()
     {
         GetComponent<Rigidbody2D>().simulated = false;
         GetComponent<CircleCollider2D>().enabled = false;
+    }
+
+    // resume action after being frozen
+    public void UnFreeze()
+    {
+        GetComponent<CircleCollider2D>().enabled = true;
+        if (played) // prevent fruit hanging in fruit placer from falling
+            GetComponent<Rigidbody2D>().simulated = true;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

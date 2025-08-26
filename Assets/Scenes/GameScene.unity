@@ -1483,7 +1483,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 824101738}
         m_TargetAssemblyTypeName: EndgamePopupUI, Assembly-CSharp
-        m_MethodName: RestartButton
+        m_MethodName: MainMenuButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

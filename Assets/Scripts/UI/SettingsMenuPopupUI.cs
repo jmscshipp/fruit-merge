@@ -30,6 +30,8 @@ public class SettingsMenuPopupUI : MonoBehaviour
             restartButton.SetActive(true);
             exitFromGameButton.SetActive(true);
             returnToMenuButton.SetActive(false);
+
+            GameManager.Instance().PauseLevel(); // stop fruit from moving
         }
     }
 
@@ -40,7 +42,10 @@ public class SettingsMenuPopupUI : MonoBehaviour
 
     public void ResumeButton()
     {
+        Debug.Log("clicked resume button");
         Close();
+        GameManager.Instance().ResumeLevel(); // continue gameplay
+
     }
 
     public void RestartButton()

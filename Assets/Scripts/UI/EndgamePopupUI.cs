@@ -31,4 +31,10 @@ public class EndgamePopupUI : MonoBehaviour
         GameManager.Instance().ResetLevel();
         Close();
     }
+
+    public void MainMenuButton()
+    {
+        UIManager.Instance().GoToMainMenu();
+        Close();
+    }
 }

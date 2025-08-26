@@ -38,8 +38,10 @@ public class FruitPlacer : MonoBehaviour
             leftXBoundary, rightXBoundary);
         crossHair.position = new Vector3(clampedX, crossHair.position.y, 0f);
 
-        if (Input.GetKeyDown(KeyCode.Mouse0) && !lerping)
-        { 
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !lerping 
+            && Camera.main.ScreenToWorldPoint(Input.mousePosition).y < 7.45f) // hmm this may need to be optimized later
+        {
+            Debug.Log("clicked, releasing fruit");
             ReleaseFruit();
         }
 
@@ -58,6 +60,7 @@ public class FruitPlacer : MonoBehaviour
         }
     }
 
+    // called by game manager when gameplay starts
     public void BeginLevel()
     {
         // reset old fruits if there are any
@@ -73,6 +76,7 @@ public class FruitPlacer : MonoBehaviour
         canInteract = true;
     }
 
+    // called by game  manager when player loses
     public void EndLevel()
     {
         canInteract = false;
@@ -108,5 +112,30 @@ public class FruitPlacer : MonoBehaviour
         float colliderRadius = heldFruit.GetComponent<CircleCollider2D>().radius;
         leftXBoundary = -5.15f + colliderRadius;
         rightXBoundary = 5.15f - colliderRadius;
+    }
+
+    // to limit interaction so when mouse is on top of screen, player can click UI without placing fruit
+    public void SetInteractability(bool interactable)
+    {
+        canInteract = interactable;
+    }
+
+    // freeze game during pause menu
+    public void Pause()
+    {
+        canInteract = false;
+        GameObject[] fruits = GameObject.FindGameObjectsWithTag("Fruit");
+        foreach (GameObject fruit in fruits)
+            fruit.GetComponent<Fruit>().Freeze();
+    }
+
+    // unfreeze game after pause menu
+    public void Resume()
+    {
+        Debug.Log("resuming fruit placer");
+        canInteract = true;
+        GameObject[] fruits = GameObject.FindGameObjectsWithTag("Fruit");
+        foreach (GameObject fruit in fruits)
+            fruit.GetComponent<Fruit>().UnFreeze();
     }
 }
