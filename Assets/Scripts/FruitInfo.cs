@@ -24,6 +24,7 @@ public class FruitInfo : MonoBehaviour
 
     public GameObject GetFruitPrefabFromLevel(int fruitLevel)
     {
+        Debug.Log("getting fruit prefab for level " + fruitLevel);
         GameObject newFruit = fruitPrefabs[fruitLevel];
 
         if (newFruit == null)
