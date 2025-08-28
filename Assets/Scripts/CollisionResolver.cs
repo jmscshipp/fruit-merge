@@ -47,6 +47,7 @@ public class CollisionResolver : MonoBehaviour
         StartCoroutine(DelayedRemovePlacementRequest(obj1.GetInstanceID()));
         StartCoroutine(DelayedRemovePlacementRequest(obj2.GetInstanceID()));
 
+        Debug.Log("spawning new fruit here: " + position);
         // instantiate and position new fruit as collision result
         GameObject newFruit = Instantiate(FruitInfo.Instance().GetFruitPrefabFromLevel(fruitLevel), position, Quaternion.identity);
         newFruit.GetComponent<Fruit>().Play(); // enable fruit physics and collision

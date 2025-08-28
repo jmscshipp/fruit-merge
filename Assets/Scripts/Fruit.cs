@@ -16,6 +16,7 @@ public class Fruit : MonoBehaviour
     private Color goalColor;
 
     private Boundary boundary; // assigned when collision occurs
+    private SpriteRenderer spriteRenderer;
     private bool played = false; // true when fruit has been active in the pit
     public int level;
 
@@ -24,6 +25,7 @@ public class Fruit : MonoBehaviour
     private void Awake()
     {
         boundary = GameObject.FindGameObjectWithTag("Boundary").GetComponent<Boundary>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     private void Update()
@@ -33,7 +35,7 @@ public class Fruit : MonoBehaviour
             lerpCounter += Time.deltaTime * 10f;
             transform.position = Vector3.Lerp(startPos, goalPos, lerpCounter);
             transform.localScale = Vector3.Lerp(Vector3.one * startScale, Vector3.one * goalScale, lerpCounter);
-            GetComponent<SpriteRenderer>().color = Color.Lerp(color, goalColor, lerpCounter);
+            spriteRenderer.color = Color.Lerp(color, goalColor, lerpCounter);
             if (lerpCounter >= 1)
             {
                 if (boundary != null)
@@ -96,7 +98,8 @@ public class Fruit : MonoBehaviour
     // called when this fruit and another combine
     public void PlayCombinationEffects(Vector3 goalPosition, int nextFruitLevel)
     {
-        GetComponent<CircleCollider2D>().enabled = false;
+        foreach(CircleCollider2D collider in GetComponentsInChildren<CircleCollider2D>())
+            collider.enabled = false;
         startScale = transform.localScale.x;
         startPos = transform.position;
         goalPos = goalPosition;
