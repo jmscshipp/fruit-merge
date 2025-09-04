@@ -108,12 +108,12 @@ TextureImporter:
       name: WATERMELON
       rect:
         serializedVersion: 2
-        x: 866
-        y: 11
-        width: 512
-        height: 606
+        x: 1738
+        y: 24
+        width: 1019
+        height: 1206
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -129,12 +129,12 @@ TextureImporter:
       name: MELON
       rect:
         serializedVersion: 2
-        x: 398
-        y: 6
-        width: 440
-        height: 484
+        x: 830
+        y: 22
+        width: 827
+        height: 959
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -150,12 +150,12 @@ TextureImporter:
       name: PEACH
       rect:
         serializedVersion: 2
-        x: 18
-        y: 15
-        width: 362
-        height: 333
+        x: 29
+        y: 30
+        width: 737
+        height: 674
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -171,12 +171,12 @@ TextureImporter:
       name: APPLE
       rect:
         serializedVersion: 2
-        x: 22
-        y: 386
-        width: 308
-        height: 283
+        x: 60
+        y: 783
+        width: 593
+        height: 539
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -192,12 +192,12 @@ TextureImporter:
       name: BLUEBERRY
       rect:
         serializedVersion: 2
-        x: 38
-        y: 703
-        width: 119
-        height: 127
+        x: 101
+        y: 1436
+        width: 189
+        height: 184
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -213,12 +213,12 @@ TextureImporter:
       name: STARFRUIT
       rect:
         serializedVersion: 2
-        x: 190
-        y: 675
-        width: 189
-        height: 196
+        x: 387
+        y: 1361
+        width: 373
+        height: 379
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -234,12 +234,12 @@ TextureImporter:
       name: POMEGRANITE
       rect:
         serializedVersion: 2
-        x: 392
-        y: 527
-        width: 257
-        height: 290
+        x: 785
+        y: 1056
+        width: 509
+        height: 572
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -255,12 +255,12 @@ TextureImporter:
       name: TANGERINE
       rect:
         serializedVersion: 2
-        x: 692
-        y: 598
-        width: 245
-        height: 211
+        x: 1407
+        y: 1228
+        width: 433
+        height: 366
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -276,12 +276,12 @@ TextureImporter:
       name: STRAWBERRY
       rect:
         serializedVersion: 2
-        x: 995
-        y: 635
-        width: 153
-        height: 179
+        x: 2006
+        y: 1295
+        width: 286
+        height: 326
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -297,12 +297,12 @@ TextureImporter:
       name: RASPBERRY
       rect:
         serializedVersion: 2
-        x: 1198
-        y: 657
-        width: 126
-        height: 124
+        x: 2419
+        y: 1333
+        width: 208
+        height: 224
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
