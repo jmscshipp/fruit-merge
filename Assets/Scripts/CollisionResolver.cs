@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.UIElements;
 using UnityEngine;
 
 public class CollisionResolver : MonoBehaviour
@@ -47,10 +48,9 @@ public class CollisionResolver : MonoBehaviour
         StartCoroutine(DelayedRemovePlacementRequest(obj1.GetInstanceID()));
         StartCoroutine(DelayedRemovePlacementRequest(obj2.GetInstanceID()));
 
-        Debug.Log("spawning new fruit here: " + position);
         // instantiate and position new fruit as collision result
         GameObject newFruit = Instantiate(FruitInfo.Instance().GetFruitPrefabFromLevel(fruitLevel), position, Quaternion.identity);
-        newFruit.GetComponent<Fruit>().Play(); // enable fruit physics and collision
+        newFruit.GetComponent<Fruit>().Play(true); // enable fruit physics and collision
 
         // scoring stuff
         int pointsFromFruit = FruitInfo.Instance().GetFruitPointValueFromLevel(fruitLevel);

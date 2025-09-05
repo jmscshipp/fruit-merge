@@ -58,6 +58,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7056987717423980153}
   - component: {fileID: 1100612476387502831}
+  - component: {fileID: 686799316792500101}
   m_Layer: 0
   m_Name: Outline
   m_TagString: Untagged
@@ -132,6 +133,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &686799316792500101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2694681529870313809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10f309bdec62bd740a8a063d5a379796, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7406903617069684494
 GameObject:
   m_ObjectHideFlags: 0
@@ -306,6 +319,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   color: {r: 0, g: 0.35686275, b: 0.050980397, a: 1}
   level: 9
+  expandCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &8778072503978539668
 GameObject:
   m_ObjectHideFlags: 0

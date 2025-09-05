@@ -4,22 +4,17 @@ using UnityEngine;
 
 public class Fruit : MonoBehaviour
 {
-    // stuff for combining anim
-    private bool lerping = false;
-    private float lerpCounter = 0f;
-    private Vector3 startPos;
-    private Vector3 goalPos;
-    private float startScale;
-    private float goalScale;
     [SerializeField, Tooltip("Have to keep this the same as the actual sprite color!")]
     private Color color;
-    private Color goalColor;
 
     private Boundary boundary; // assigned when collision occurs
     private SpriteRenderer spriteRenderer;
     private bool played = false; // true when fruit has been active in the pit
     public int level;
-
+    [SerializeField]
+    private AnimationCurve expandCurve; // animated scale of fruit when it gets played in the game
+    private bool expandLerp = false;
+    private float lerpTimer = 0f;
     public int GetLevel() => level;
 
     private void Awake()
@@ -30,41 +25,59 @@ public class Fruit : MonoBehaviour
 
     private void Update()
     {
-        if (lerping)
+        // making the fruit expand when placed at spawn time
+        if (expandLerp)
         {
-            lerpCounter += Time.deltaTime * 10f;
-            transform.position = Vector3.Lerp(startPos, goalPos, lerpCounter);
-            transform.localScale = Vector3.Lerp(Vector3.one * startScale, Vector3.one * goalScale, lerpCounter);
-            spriteRenderer.color = Color.Lerp(color, goalColor, lerpCounter);
-            if (lerpCounter >= 1)
+            lerpTimer += Time.deltaTime * 3f;
+            transform.localScale = Vector3.one * expandCurve.Evaluate(lerpTimer);
+            if (lerpTimer >= 1f)
             {
-                if (boundary != null)
-                    boundary.StopTrackingFruit(gameObject); // remove from boundary collision list in case still overlapping
-                Destroy(gameObject);
+                GetComponent<Rigidbody2D>().simulated = true; // wait for fruit to be expanded to turn on physics
+                expandLerp = false;
             }
         }
     }
 
     // called when fruit is entered into the game, either dropped from fruit placer or spawned from combination
-    public void Play()
+    public void Play(bool createdFromCollision = false)
     {
-        GetComponent<Rigidbody2D>().simulated = true;
         if (transform.position.y >= 3.69f) // if fruit is spawned in the pit, it won't be tracked
             boundary.TrackFruit(gameObject);
         played = true;
+        if (createdFromCollision)
+        {
+            expandLerp = true;
+            StartCoroutine(SuperImpose());
+        }
+        else
+            GetComponent<Rigidbody2D>().simulated = true; // immediately use physics
+    }
+
+    // when fruit is first spawned in, move it to the front most sprite layer so it's in front
+    private IEnumerator SuperImpose()
+    {
+        // set to superimposed sorting layer
+        foreach (SpriteRenderer sprite in GetComponentsInChildren<SpriteRenderer>())
+            sprite.sortingLayerName = "SuperImposedFruit";
+        yield return new WaitForSeconds(0.15f);
+        // set back to default layer
+        foreach (SpriteRenderer sprite in GetComponentsInChildren<SpriteRenderer>())
+            sprite.sortingLayerName = "Default";
     }
 
     // called when game is over or pauseed to prevent further action
     public void Freeze()
     {
         GetComponent<Rigidbody2D>().simulated = false;
-        GetComponent<CircleCollider2D>().enabled = false;
+        foreach (CircleCollider2D collider in GetComponentsInChildren<CircleCollider2D>())
+            collider.enabled = false;
     }
 
     // resume action after being frozen
     public void UnFreeze()
     {
-        GetComponent<CircleCollider2D>().enabled = true;
+        foreach (CircleCollider2D collider in GetComponentsInChildren<CircleCollider2D>())
+            collider.enabled = true;
         if (played) // prevent fruit hanging in fruit placer from falling
             GetComponent<Rigidbody2D>().simulated = true;
     }
@@ -98,16 +111,17 @@ public class Fruit : MonoBehaviour
     // called when this fruit and another combine
     public void PlayCombinationEffects(Vector3 goalPosition, int nextFruitLevel)
     {
-        foreach(CircleCollider2D collider in GetComponentsInChildren<CircleCollider2D>())
-            collider.enabled = false;
-        startScale = transform.localScale.x;
-        startPos = transform.position;
-        goalPos = goalPosition;
-        goalScale = transform.localScale.x + 0.2f; // PLACEHOLDER.. should get scale of next fruit
-        goalColor = FruitInfo.Instance().GetFruitPrefabFromLevel(nextFruitLevel).
-            GetComponent<Fruit>().GetColor();
-        lerping = true;
+        Freeze();
+
+        GetComponentInChildren<FruitOutline>().Whitout();
+        spriteRenderer.color = Color.white;
+        StartCoroutine(DelayedDestroy());
     }
 
-    public Color GetColor() => color;
+    private IEnumerator DelayedDestroy()
+    {
+        yield return new WaitForSeconds(0.15f);
+        boundary.StopTrackingFruit(gameObject); // remove from boundary collision list in case still overlapping
+        Destroy(gameObject);
+    }
 }

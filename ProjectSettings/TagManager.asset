@@ -43,3 +43,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: SuperImposedFruit
+    uniqueID: 1174622489
+    locked: 0
+  - name: AlwaysFront
+    uniqueID: 3940356979
+    locked: 0
