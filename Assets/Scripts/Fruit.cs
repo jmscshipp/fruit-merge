@@ -9,6 +9,7 @@ public class Fruit : MonoBehaviour
 
     private Boundary boundary; // assigned when collision occurs
     private SpriteRenderer spriteRenderer;
+    private FruitOutline outline;
     private bool played = false; // true when fruit has been active in the pit
     public int level;
     [SerializeField]
@@ -21,6 +22,7 @@ public class Fruit : MonoBehaviour
     {
         boundary = GameObject.FindGameObjectWithTag("Boundary").GetComponent<Boundary>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        outline = GetComponentInChildren<FruitOutline>();
     }
 
     private void Update()
@@ -42,7 +44,10 @@ public class Fruit : MonoBehaviour
     public void Play(bool createdFromCollision = false)
     {
         if (transform.position.y >= 3.69f) // if fruit is spawned in the pit, it won't be tracked
+        {
             boundary.TrackFruit(gameObject);
+            outline.BlinkRed();
+        }
         played = true;
         if (createdFromCollision)
         {
@@ -95,7 +100,10 @@ public class Fruit : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Boundary")
+        {
             boundary.StopTrackingFruit(gameObject);
+            outline.StopblinkingRed();
+        }
     }
 
     // for use with out of bounds boundary
@@ -104,7 +112,10 @@ public class Fruit : MonoBehaviour
         if (collision.gameObject.tag == "Boundary")
         {
             if (transform.position.y >= 4.8f)
+            {
                 boundary.TrackFruit(gameObject);
+                outline.BlinkRed();
+            }
         }
     }
 
