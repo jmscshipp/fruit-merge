@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class Fruit : MonoBehaviour
 {
     [SerializeField, Tooltip("Have to keep this the same as the actual sprite color!")]
-    private Color color;
-
+    private Color spriteColor;
+    [SerializeField, Tooltip("The color being lerped to to blink when almost over border")]
+    private Color dangerBlinkColor;
     private Boundary boundary; // assigned when collision occurs
     private SpriteRenderer spriteRenderer;
     private FruitOutline outline;
@@ -15,7 +17,9 @@ public class Fruit : MonoBehaviour
     [SerializeField]
     private AnimationCurve expandCurve; // animated scale of fruit when it gets played in the game
     private bool expandLerp = false;
-    private float lerpTimer = 0f;
+    private float lerpTimer = 0f; // using for expanding AND blinking
+    private bool blinkRed = false;
+ 
     public int GetLevel() => level;
 
     private void Awake()
@@ -38,6 +42,11 @@ public class Fruit : MonoBehaviour
                 expandLerp = false;
             }
         }
+        else if (blinkRed)
+        {
+            lerpTimer += Time.deltaTime * 3f;
+            spriteRenderer.color = Color.Lerp(spriteColor, dangerBlinkColor, Mathf.PingPong(lerpTimer, 1f));
+        }
     }
 
     // called when fruit is entered into the game, either dropped from fruit placer or spawned from combination
@@ -46,7 +55,7 @@ public class Fruit : MonoBehaviour
         if (transform.position.y >= 3.69f) // if fruit is spawned in the pit, it won't be tracked
         {
             boundary.TrackFruit(gameObject);
-            outline.BlinkRed();
+            StartCoroutine(BlinkRed(0.5f));
         }
         played = true;
         if (createdFromCollision)
@@ -103,6 +112,7 @@ public class Fruit : MonoBehaviour
         {
             boundary.StopTrackingFruit(gameObject);
             outline.StopblinkingRed();
+            StopBlinkingRed();
         }
     }
 
@@ -115,8 +125,23 @@ public class Fruit : MonoBehaviour
             {
                 boundary.TrackFruit(gameObject);
                 outline.BlinkRed();
+                StartCoroutine(BlinkRed(0f));
             }
         }
+    }
+
+    private IEnumerator BlinkRed(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        lerpTimer = 0f;
+        blinkRed = true;
+    }
+
+    private void StopBlinkingRed()
+    {
+        StopAllCoroutines();
+        blinkRed = false;
+        spriteRenderer.color = spriteColor;
     }
 
     // called when this fruit and another combine

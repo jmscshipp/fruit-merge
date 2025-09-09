@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class FruitOutline : MonoBehaviour
 {
+    [SerializeField, Tooltip("Have to keep this the same as the actual sprite color!")]
+    private Color spriteColor;
+    [SerializeField, Tooltip("The color being lerped to to blink when almost over border")]
+    private Color dangerBlinkColor;
     private SpriteRenderer outline;
     private bool blinking = false;
     private float lerpTimer = 0f;
@@ -16,11 +20,11 @@ public class FruitOutline : MonoBehaviour
 
     private void Update()
     {
-        if (blinking)
-        {
-            lerpTimer += Time.deltaTime * 3f;
-            outline.color = Color.Lerp(Color.black, Color.red, Mathf.PingPong(lerpTimer, 1f));
-        }
+        //if (blinking)
+        //{
+        //    lerpTimer += Time.deltaTime * 3f;
+        //    outline.color = Color.Lerp(Color.black, Color.red, Mathf.PingPong(lerpTimer, 1f));
+        //}
     }
 
     public void BlinkRed()

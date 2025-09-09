@@ -170,7 +170,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e91be2c940e21fa468db76bd98d56650, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: {r: 0.7372549, g: 0.2901961, b: 0.50980395, a: 1}
+  spriteColor: {r: 0.78039217, g: 0.11764706, b: 0.39215687, a: 1}
+  dangerBlinkColor: {r: 0.78039217, g: 0.34117648, b: 0.39215687, a: 1}
   level: 1
   expandCurve:
     serializedVersion: 2
@@ -930,6 +931,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10f309bdec62bd740a8a063d5a379796, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteColor: {r: 0.78039217, g: 0.11764706, b: 0.39215687, a: 1}
+  dangerBlinkColor: {r: 0.78039217, g: 0.34117648, b: 0.39215687, a: 1}
 --- !u!1 &7102549265558700989
 GameObject:
   m_ObjectHideFlags: 0
