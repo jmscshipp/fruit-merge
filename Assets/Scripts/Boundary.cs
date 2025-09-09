@@ -4,6 +4,7 @@ using System.Linq;
 using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 public class Boundary : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class Boundary : MonoBehaviour
     // for lerping in transparency of boundary sprite
     [SerializeField]
     private Color spriteColor; // for lerping purposes
+    [SerializeField]
+    private Color clearColor; // for lerping purposes
     private bool lerpingIn = false;
     private bool lerpingOut = false;
     private float lerpTimer = 0f;
@@ -47,41 +50,40 @@ public class Boundary : MonoBehaviour
             return;
 
         // making sprite transparent when no fruits are overlapping
-        if (lerpingIn)
-        {
-            lerpTimer += Time.deltaTime * 3f;
-            spriteRenderer.color = Color.Lerp(Color.clear, spriteColor, lerpTimer);
-            if (lerpTimer >= 1f)
-            {
-                visible = true;
-                lerpingIn = false;
-            }
-        }
-        else if (lerpingOut)
-        {
-            lerpTimer += Time.deltaTime * 3f;
-            spriteRenderer.color = Color.Lerp(spriteColor, Color.clear, lerpTimer);
-            if (lerpTimer >= 1f)
-            {
-                visible = false;
-                lerpingOut = false;
-            }
-        }
+        //if (lerpingIn)
+        //{
+        //    lerpTimer += Time.deltaTime * 3f;
+        //    spriteRenderer.color = Color.Lerp(Color.clear, clearColor, lerpTimer);
+        //    if (lerpTimer >= 1f)
+        //    {
+        //        lerpingIn = false;
+        //    }
+        //}
+        //else if (lerpingOut)
+        //{
+        //    lerpTimer += Time.deltaTime * 3f;
+        //    spriteRenderer.color = Color.Lerp(spriteColor, clearColor, lerpTimer);
+        //    if (lerpTimer >= 1f)
+        //    {
+        //        lerpingOut = false;
+        //    }
+        //}
 
         // increase time for any overlapping fruits
         foreach (CollisionEntry entry in collidingFruits)
-        {
-            entry.timeOverlapping += Time.deltaTime;
-            if (entry.timeOverlapping > overlapTimeMax)
             {
-                GameManager.Instance().EndLevel();
-                break;
+                entry.timeOverlapping += Time.deltaTime;
+                if (entry.timeOverlapping > overlapTimeMax)
+                {
+                    GameManager.Instance().EndLevel();
+                    break;
+                }
             }
-        }
     }
 
     public void TrackFruit(Object fruit)
     {
+        Debug.Log("tracking new fruit");
         collidingFruits.Add(new CollisionEntry(fruit.GetInstanceID(), 0f));
         if (!visible)
             LerpIn();
@@ -89,9 +91,14 @@ public class Boundary : MonoBehaviour
 
     public void StopTrackingFruit(Object fruit)
     {
-        collidingFruits.Remove(collidingFruits.FirstOrDefault(entry => entry.objectId == fruit.GetInstanceID()));
-        if (collidingFruits.Count == 0 && visible)
+
+        bool succesfulRemove = collidingFruits.Remove(collidingFruits.FirstOrDefault(entry => entry.objectId == fruit.GetInstanceID()));
+        if (succesfulRemove && collidingFruits.Count == 0 && visible)
+        {
+        Debug.Log("stopped tracking fruit");
             LerpOut();
+
+        }
     }
 
     public void ClearAllTrackedFruits()
@@ -117,6 +124,7 @@ public class Boundary : MonoBehaviour
     {
         lerpingIn = true;
         lerpingOut = false;
+        visible = true;
         lerpTimer = 0f;
     }
 
@@ -124,6 +132,37 @@ public class Boundary : MonoBehaviour
     {
         lerpingOut = true;
         lerpingIn = false;
+        visible = false;
         lerpTimer = 0f;
+    }
+
+    // for use with out of bounds boundary
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Fruit")
+        {
+            StopTrackingFruit(gameObject);
+            //outline.StopblinkingRed();
+            //StopBlinkingRed();
+        }
+    }
+
+    // for use with out of bounds boundary
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Fruit")
+        {
+            if (collision.gameObject.transform.position.y >= transform.position.y)
+            {
+                TrackFruit(gameObject);
+                //outline.BlinkRed();
+                //StartCoroutine(BlinkRed(0f));
+            }
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        
     }
 }

@@ -5927,6 +5927,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   overlapTimeMax: 2
   spriteColor: {r: 1, g: 1, b: 1, a: 0.3882353}
+  clearColor: {r: 1, g: 1, b: 1, a: 0}
 --- !u!1 &1495699397
 GameObject:
   m_ObjectHideFlags: 0

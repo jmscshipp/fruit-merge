@@ -105,31 +105,6 @@ public class Fruit : MonoBehaviour
         }
     }
 
-    // for use with out of bounds boundary
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Boundary")
-        {
-            boundary.StopTrackingFruit(gameObject);
-            outline.StopblinkingRed();
-            StopBlinkingRed();
-        }
-    }
-
-    // for use with out of bounds boundary
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Boundary")
-        {
-            if (transform.position.y >= 4.8f)
-            {
-                boundary.TrackFruit(gameObject);
-                outline.BlinkRed();
-                StartCoroutine(BlinkRed(0f));
-            }
-        }
-    }
-
     private IEnumerator BlinkRed(float delay)
     {
         yield return new WaitForSeconds(delay);
