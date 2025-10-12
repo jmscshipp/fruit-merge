@@ -22,28 +22,6 @@ public class Boundary : MonoBehaviour
     private bool lerpingOut = false;
     private float lerpTimer = 0f;
     private bool visible = false;
-
-    // for use keeping track of currently overlapping fruits
-    class CollisionEntry
-    {
-        public int objectId;
-        public float timeOverlapping;
-        public CollisionEntry(int id, float time)
-        {
-            objectId = id;
-            timeOverlapping = time;
-        }
-    }
-
-    // collection of fruits currently overlapping boundary 
-    private HashSet<CollisionEntry> collidingFruits = new HashSet<CollisionEntry>();
-
-    private void Awake()
-    {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.color = Color.clear;
-    }
-
     void Update()
     {
         if (!gameActive)
@@ -68,44 +46,6 @@ public class Boundary : MonoBehaviour
         //        lerpingOut = false;
         //    }
         //}
-
-        // increase time for any overlapping fruits
-        foreach (CollisionEntry entry in collidingFruits)
-            {
-                entry.timeOverlapping += Time.deltaTime;
-                if (entry.timeOverlapping > overlapTimeMax)
-                {
-                    GameManager.Instance().EndLevel();
-                    break;
-                }
-            }
-    }
-
-    public void TrackFruit(Object fruit)
-    {
-        Debug.Log("tracking new fruit");
-        collidingFruits.Add(new CollisionEntry(fruit.GetInstanceID(), 0f));
-        if (!visible)
-            LerpIn();
-    }
-
-    public void StopTrackingFruit(Object fruit)
-    {
-
-        bool succesfulRemove = collidingFruits.Remove(collidingFruits.FirstOrDefault(entry => entry.objectId == fruit.GetInstanceID()));
-        if (succesfulRemove && collidingFruits.Count == 0 && visible)
-        {
-        Debug.Log("stopped tracking fruit");
-            LerpOut();
-
-        }
-    }
-
-    public void ClearAllTrackedFruits()
-    {
-        collidingFruits.Clear();
-        if (visible)
-            LerpOut();
     }
 
     // to prevent time from counting during pause menu
@@ -136,12 +76,15 @@ public class Boundary : MonoBehaviour
         lerpTimer = 0f;
     }
 
-    // for use with out of bounds boundary
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Fruit")
+        Transform fruit = collision.transform.parent; // the collider is a child of the fruit object
+        if (fruit.tag == "Fruit")
         {
-            StopTrackingFruit(gameObject);
+            Debug.Log("fruit hit boundary");
+
+            fruit.GetComponent<Fruit>().UpdateFruitOutOfBounds(false);
+            //StopTrackingFruit(gameObject);
             //outline.StopblinkingRed();
             //StopBlinkingRed();
         }
@@ -150,19 +93,19 @@ public class Boundary : MonoBehaviour
     // for use with out of bounds boundary
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Fruit")
+        Transform fruit = collision.transform.parent; // the collider is a child of the fruit object
+        if (fruit.tag == "Fruit")
         {
-            if (collision.gameObject.transform.position.y >= transform.position.y)
+            if (fruit.position.y >= transform.position.y)
             {
-                TrackFruit(gameObject);
+                Debug.Log("fruit left boundary");
+
+                fruit.GetComponent<Fruit>().UpdateFruitOutOfBounds(true);
+
+                //TrackFruit(gameObject);
                 //outline.BlinkRed();
                 //StartCoroutine(BlinkRed(0f));
             }
         }
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        
     }
 }

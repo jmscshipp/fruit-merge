@@ -33,7 +33,6 @@ public class GameManager : MonoBehaviour
             fruit.GetComponent<Fruit>().Freeze();
 
         fruitplacer.EndLevel();
-        boundary.ClearAllTrackedFruits();
 
         if (skipToMainMenu)
             return;
@@ -47,10 +46,6 @@ public class GameManager : MonoBehaviour
         GameObject[] fruits = GameObject.FindGameObjectsWithTag("Fruit");
         foreach (GameObject fruit in fruits)
             Destroy(fruit);
-
-        // clearing again because when fruits are 
-        // deleted, they get tracked by boundary from leavin the trigger
-        boundary.ClearAllTrackedFruits(); 
 
         ScoreManager.Instance().ResetLevelScore();
         fruitplacer.BeginLevel();

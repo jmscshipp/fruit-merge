@@ -19,7 +19,8 @@ public class Fruit : MonoBehaviour
     private bool expandLerp = false;
     private float lerpTimer = 0f; // using for expanding AND blinking
     private bool blinkRed = false;
- 
+    private float deathTime = 8f; // time before fruit is destroyed after going out of bounds
+
     public int GetLevel() => level;
 
     private void Awake()
@@ -46,6 +47,10 @@ public class Fruit : MonoBehaviour
         {
             lerpTimer += Time.deltaTime * 3f;
             spriteRenderer.color = Color.Lerp(spriteColor, dangerBlinkColor, Mathf.PingPong(lerpTimer, 1f));
+            if (lerpTimer >= deathTime)
+            {
+                GameManager.Instance().EndLevel();
+            }
         }
     }
 
@@ -54,7 +59,6 @@ public class Fruit : MonoBehaviour
     {
         if (transform.position.y >= 3.69f) // if fruit is spawned in the pit, it won't be tracked
         {
-            boundary.TrackFruit(gameObject);
             StartCoroutine(BlinkRed(0.5f));
         }
         played = true;
@@ -132,7 +136,20 @@ public class Fruit : MonoBehaviour
     private IEnumerator DelayedDestroy()
     {
         yield return new WaitForSeconds(0.15f);
-        boundary.StopTrackingFruit(gameObject); // remove from boundary collision list in case still overlapping
         Destroy(gameObject);
+    }
+
+    public void UpdateFruitOutOfBounds(bool outOfBounds)
+    {
+        if (outOfBounds)
+        {
+            StartCoroutine(BlinkRed(0f));
+            Debug.Log("fruit out of bounds");
+        }
+        else if (!outOfBounds)
+        {
+            StopBlinkingRed();
+            Debug.Log("fruit back in bounds");
+        }
     }
 }
