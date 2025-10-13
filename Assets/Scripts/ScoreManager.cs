@@ -16,6 +16,8 @@ public class ScoreManager : MonoBehaviour
         if (instance != null && instance != this)
             Destroy(this);
         instance = this;
+
+        localHighScore = PlayerPrefs.GetInt("LocalHighScore", 0);
     }
     public static ScoreManager Instance()
     {
@@ -50,5 +52,7 @@ public class ScoreManager : MonoBehaviour
     }
 
     public int GetCurrentLevelScore() => currentLevelScore;
+
+    public int GetLocalHighScore() => localHighScore;
     public bool IsNewLocalHighScoreThisSession() => newLocalHighScoreThisSession;
 }
