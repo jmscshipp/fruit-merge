@@ -38,10 +38,9 @@ public class FruitPlacer : MonoBehaviour
             leftXBoundary, rightXBoundary);
         crossHair.position = new Vector3(clampedX, crossHair.position.y, 0f);
 
-        if (Input.GetKeyDown(KeyCode.Mouse0) && !lerping 
+        if (Input.GetKeyUp(KeyCode.Mouse0) && !lerping 
             && Camera.main.ScreenToWorldPoint(Input.mousePosition).y < 7.45f) // hmm this may need to be optimized later
         {
-            Debug.Log("clicked, releasing fruit");
             ReleaseFruit();
         }
 
@@ -73,6 +72,13 @@ public class FruitPlacer : MonoBehaviour
         queuedFruit = CreateFruit(randomFruitBag[(int)Random.Range(0f, randomFruitBag.Count - 1)], transform.position);
         UpdateCrossHairBoundaries();
         lerpTimer = 0f;
+        StartCoroutine(MakeInteractable());
+    }
+
+    // small delay so a fruit isn't placed when play button clicked
+    private IEnumerator MakeInteractable()
+    {
+        yield return new WaitForSeconds(0.1f);
         canInteract = true;
     }
 
