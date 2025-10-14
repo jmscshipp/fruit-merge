@@ -50,6 +50,7 @@ public class Fruit : MonoBehaviour
             if (lerpTimer >= deathTime)
             {
                 GameManager.Instance().EndLevel();
+                blinkRed = false;
             }
         }
     }
@@ -83,7 +84,7 @@ public class Fruit : MonoBehaviour
             sprite.sortingLayerName = "Default";
     }
 
-    // called when game is over or pauseed to prevent further action
+    // called when game is over or paused to prevent further action
     public void Freeze()
     {
         GetComponent<Rigidbody2D>().simulated = false;

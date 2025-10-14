@@ -51,6 +51,14 @@ public class ScoreManager : MonoBehaviour
         UIManager.Instance().UpdateHighScoreText(localHighScore);
     }
 
+    public void ResetLocalHighScore()
+    {
+        localHighScore = 0;
+        PlayerPrefs.SetInt("LocalHighScore", localHighScore);
+        newLocalHighScoreThisSession = false;
+        UIManager.Instance().UpdateHighScoreText(localHighScore);
+    }
+
     public int GetCurrentLevelScore() => currentLevelScore;
 
     public int GetLocalHighScore() => localHighScore;

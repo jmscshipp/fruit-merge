@@ -23,6 +23,7 @@ public class EndgamePopupUI : MonoBehaviour
 
     public void Close()
     {
+        Debug.Log("Closing endgame popup");
         gameObject.SetActive(false);
     }
 

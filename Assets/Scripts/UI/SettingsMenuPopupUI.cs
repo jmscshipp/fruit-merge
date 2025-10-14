@@ -66,7 +66,7 @@ public class SettingsMenuPopupUI : MonoBehaviour
 
     public void ResetHighscoreButton()
     {
-    
+        ScoreManager.Instance().ResetLocalHighScore();
     }
 
     // for use exiting settings modal from the main menu

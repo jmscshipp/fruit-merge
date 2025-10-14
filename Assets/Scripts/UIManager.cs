@@ -14,7 +14,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TMP_Text currentScoreText;
     [SerializeField]
-    private TMP_Text highScoreText;
+    private TMP_Text inGameHighScoreText;
+    [SerializeField]
+    private TMP_Text mainMenuHighScoreText;
 
     private static UIManager instance;
 
@@ -55,7 +57,8 @@ public class UIManager : MonoBehaviour
 
     public void UpdateHighScoreText(int score)
     {
-        highScoreText.text = score.ToString();
+        inGameHighScoreText.text = score.ToString();
+        mainMenuHighScoreText.text = score.ToString();
     }
 
     public void GoToMainMenu()

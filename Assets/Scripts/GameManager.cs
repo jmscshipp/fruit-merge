@@ -24,8 +24,9 @@ public class GameManager : MonoBehaviour
     }
 
     // called when game is lost
-    public void EndLevel(bool skipToMainMenu = false)
+    public void EndLevel(bool skipToMainMenu = false) // skipToMainMenu true when player quits to main menu
     {
+        Debug.Log("Game Over");
         // add cool end game animation here? like fruit scattering everywhere
 
         GameObject[] fruits = GameObject.FindGameObjectsWithTag("Fruit");
